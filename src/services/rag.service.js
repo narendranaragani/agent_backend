@@ -197,6 +197,33 @@ export const getRAGResponse = async (question) => {
     return result.content;
   } catch (error) {
     console.error(`[RAG] EXCEPTION: ${error.message}`);
-    return "I'm having trouble right now. Please try again or contact the college office for assistance.";
+    return `I am having trouble accessing the knowledge base (${error.message}). Please check server logs and configuration.`;
   }
+};
+
+export const checkHealth = async () => {
+  const status = {
+    hasMongoUri: Boolean(process.env.MONGODB_URI),
+    hasGoogleKey: Boolean(process.env.GOOGLE_API_KEY),
+    mongo: "unknown",
+    gemini: "unknown",
+  };
+
+  try {
+    const client = await getMongoClient();
+    await client.db("admin").command({ ping: 1 });
+    status.mongo = "connected";
+  } catch (err) {
+    status.mongo = `failed: ${err.message}`;
+  }
+
+  try {
+    const embeddings = getEmbeddings();
+    await embeddings.embedQuery("ping");
+    status.gemini = "working";
+  } catch (err) {
+    status.gemini = `failed: ${err.message}`;
+  }
+
+  return status;
 };

@@ -1,3 +1,10 @@
+import dns from "node:dns";
+try {
+  dns.setServers(["8.8.8.8", "1.1.1.1"]);
+} catch {
+  // Ignore
+}
+
 import app from "./app.js";
 import { initializeKnowledgeBase } from "./services/rag.service.js";
 
