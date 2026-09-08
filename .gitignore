@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+node_modules - Copy/
+
+# Environment files (API keys and secrets)
+.env
+.env.*
+*.local
+
+# Build artifacts & Lambda packages (GitHub blocks files > 100MB)
+*.zip
+function.zip
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
