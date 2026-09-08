@@ -10,11 +10,16 @@ app.use(
   cors({
     origin: process.env.CLIENT_URL || "http://localhost:5173",
     credentials: true,
-    methods: ["POST"],
+    methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   })
 );
 app.use(express.json({ limit: "10mb" }));
+
+// Health Check
+app.get("/", (req, res) => {
+  res.status(200).json({ status: "active", message: "EduReach API is running" });
+});
 
 // Routes
 app.use("/api/chat", chatRoutes);
